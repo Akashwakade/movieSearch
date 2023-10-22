@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Web Movie App</title>
+    <style>
+      /* Write necessery styles here  */
+      *{
+        margin: 0%;
+        padding: 0%;
+      }
+      #search{
+          margin: auto;
+          /* margin-top: 40px; */
+        
+          width: 400px;
+      }
+      body{
+        font-family:'Roboto', sans-serif;
+        background-color: white;
+      }
+      nav{
+        background-color: rgb(153, 134, 158);
+        
+       height: 50px;
+       margin: auto;
+      }
+      #search-inp{
+         width: 300px;
+         height: 30px;
+      }
+      #search-btn{
+        width: 50px;
+         height: 30px;
+      }
+      #movie_container{
+        display: flex;
+        /* border: 2px solid red; */
+        background-color: rgb(238, 224, 22);
+       
+        
+        margin: auto;
+      }
+      .leftdiv{
+        border: 2px solid black;
+        
+      }
+      img{
+        width: 300px;
+      }
+      .main{
+       /* border: 2px solid black; */
+       justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+    <div id="search">
+      <input type="text" placeholder="Search" id="search-inp"/>
+      <button id="search-btn">Search</button>
+    </div>
+  </nav>
+  <div class="main">
+    <div id="movie_container"></div>
+    <div class="leftdiv"></div>
+    <h2 class="error-container"></h2></div>
+  </body>
+
+  <script>
+    // Write necessery JS here
+   //http://www.omdbapi.com/?i=tt3896198&apikey=9ad4cdf
+    let button=document.querySelector("button");
+
+    
+
+   
+    let errorcontainer=document.querySelector(".error-container");
+    button.addEventListener("click", async function(){
+        let searchQuery=document.querySelector("input").value;
+        if(searchQuery==""||undefined){
+          let errorcontainer=document.querySelector(".error-container");
+          errorcontainer.innerHTML=`<h1>enter valid data</h1>`
+          return
+        }
+        errorcontainer.innerHTML=null
+       let apiKey=`https://www.omdbapi.com/?i=tt3896198&apikey=9ad4cdf&t=${searchQuery}`
+      await fetch(apiKey)
+      
+      
+      
+      .then(function(data){
+        return data.json()
+      })
+      .then(function(data){
+        // console.log(data)
+        display(data)
+      })
+      .catch(function(error){
+        console.log(error)
+      
+        // let h2=document.querySelector("h2")
+         
+        //  // h2.setAttribute("class",error-container)
+        //   h2.textContent="Movie not found!";
+       
+         
+      })
+     // let api="https://www.omdbapi.com/?i=tt3896198&apikey=9ad4cdf&s=<searchQuery>"
+        //console.log(apikey)
+       
+   })
+   
+   
+    function display(data){
+          let container=document.querySelector("#movie_container");
+          
+          container.innerHTML=null;
+          console.log(data)
+          
+            let div=document.createElement("div");
+            let leftdiv=document.querySelector(".leftdiv");
+          let title=document.createElement("h2");
+          let poster=document.createElement("img");
+
+          let released=document.createElement("h2");
+          let genere=document.createElement("h2");
+          let director=document.createElement("h2");
+          let actors=document.createElement("h2");
+          let plot=document.createElement("h2");
+          let language=document.createElement("h2");
+
+          title.textContent=`Title:${data.Title}`
+          title.setAttribute("class",title)
+           poster.setAttribute("src",data.Poster);
+           poster.setAttribute("class",poster)
+         
+           released.textContent=`released date:${data.Released}`
+           genere.textContent=`Genre: ${data.Genre}`
+           director=`Director: ${data.Director}`
+           actors.textContent=`Actors:${data.Actors}`
+           plot.textContent=`Plot:${data.Plot}`
+           language.textContent=`language:${data.Language}`
+           
+
+           leftdiv.append(title,poster,released)
+          div.append(genere,director,actors,plot,language)
+          container.append(leftdiv,div)
+          
+         
+          
+        }
+       
+
+       
+         
+
+
+        
+
+  </script>
+</html>
